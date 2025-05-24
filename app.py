@@ -8,8 +8,6 @@ app = Flask(__name__)
 
 MODEL_PATH = "models/best_model.keras"
 model = tf.keras.models.load_model(MODEL_PATH)
-DATASET_PATH = "dataset"
-class_names = sorted(os.listdir(DATASET_PATH))
 
 # Mapping index ke label
 index_to_label = {
