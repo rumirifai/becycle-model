@@ -76,9 +76,9 @@ def predict():
 
     label, conf, recyclable = predict_image(file_path)
     
-    img_id = f"{label}_{uuid.uuid4().hex[:8]}"
+    # img_id = f"{label}_{uuid.uuid4().hex[:8]}"
     
-    upload_result = cloudinary.uploader.upload(file_path, folder="trash", public_id=img_id)
+    upload_result = cloudinary.uploader.upload(file_path, folder="trash")
     img_url = upload_result["secure_url"]
 
     os.remove(file_path)
