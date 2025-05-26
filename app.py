@@ -3,6 +3,7 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import numpy as np
 import os
+import uuid
 import cloudinary
 import cloudinary.uploader
 from dotenv import load_dotenv
@@ -72,8 +73,10 @@ def predict():
     
     file_path = "temp.jpg"
     file.save(file_path)
+    
+    img_id = f"{label}_{uuid.uuid4().hex[:8]}"
 
-    upload_result = cloudinary.uploader.upload(file_path, folder="trash")
+    upload_result = cloudinary.uploader.upload(file_path, folder="trash", public_id=img_id)
     img_url = upload_result["secure_url"]
 
     label, conf, recyclable = predict_image(file_path)
