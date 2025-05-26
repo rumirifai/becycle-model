@@ -2,3 +2,4 @@ tensorflow>=2.12
 flask
 pillow
 cloudinary
+python-dotenv

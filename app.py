@@ -5,6 +5,8 @@ import numpy as np
 import os
 import cloudinary
 import cloudinary.uploader
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -68,12 +70,11 @@ def predict():
 
     file = request.files['file']
     
-    upload_result = cloudinary.uploader.upload(file, public_id="storage", folder="trash")
-    
-    img_url = upload_result["secure_url"]
-    
     file_path = "temp.jpg"
     file.save(file_path)
+
+    upload_result = cloudinary.uploader.upload(file_path, folder="trash")
+    img_url = upload_result["secure_url"]
 
     label, conf, recyclable = predict_image(file_path)
     os.remove(file_path)
@@ -91,4 +92,4 @@ def predict():
     return jsonify(response)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=3000)
