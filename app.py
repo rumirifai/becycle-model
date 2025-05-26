@@ -13,9 +13,9 @@ model = tf.keras.models.load_model(MODEL_PATH)
 
 # Config Cloudinary
 cloudinary.config(
-  cloud_name = "dp7xpq6hb",
-  api_key = "351219748492825",
-  api_secret = "BD2FiRS5mzrxcQT-WrvO870fxzo",
+  cloud_name = os.getenv("CLOUD_NAME"),
+  api_key = os.getenv("API_KEY"),
+  api_secret = os.getenv("API_SECRET"),
   secure = True
 )
 
@@ -68,7 +68,7 @@ def predict():
 
     file = request.files['file']
     
-    upload_result = cloudinary.uploader.upload(file)
+    upload_result = cloudinary.uploader.upload(file, public_id="storage", folder="trash")
     
     img_url = upload_result["secure_url"]
     
