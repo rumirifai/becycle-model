@@ -3,11 +3,21 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import numpy as np
 import os
+import cloudinary
+import cloudinary.uploader
 
 app = Flask(__name__)
 
 MODEL_PATH = "models/best_model.keras"
 model = tf.keras.models.load_model(MODEL_PATH)
+
+# Config Cloudinary
+cloudinary.config(
+  cloud_name = "dp7xpq6hb",
+  api_key = "351219748492825",
+  api_secret = "BD2FiRS5mzrxcQT-WrvO870fxzo",
+  secure = True
+)
 
 # Mapping index ke label
 index_to_label = {
@@ -57,6 +67,11 @@ def predict():
         return jsonify({'error': 'No file uploaded'}), 400
 
     file = request.files['file']
+    
+    upload_result = cloudinary.uploader.upload(file)
+    
+    img_url = upload_result["secure_url"]
+    
     file_path = "temp.jpg"
     file.save(file_path)
 
@@ -65,7 +80,8 @@ def predict():
 
     response = {
         'label': label,
-        'confidence': f"{conf*100:.2f}%"
+        'confidence': f"{conf*100:.2f}%",
+        'image_url': img_url
     }
 
     # Tambahkan recyclable hanya jika labelnya bukan unknown
