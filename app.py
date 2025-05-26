@@ -73,11 +73,14 @@ def predict():
     
     file_path = "temp.jpg"
     file.save(file_path)
+    
+    label, conf, recyclable = predict_image(file_path)
 
-    upload_result = cloudinary.uploader.upload(file_path, folder="trash")
+    img_id = f"{label}_{uuid.uuid4().hex[:8]}"
+    
+    upload_result = cloudinary.uploader.upload(file_path, folder="trash", public_id=img_id)
     img_url = upload_result["secure_url"]
 
-    label, conf, recyclable = predict_image(file_path)
     os.remove(file_path)
     
     response = {
@@ -93,4 +96,4 @@ def predict():
     return jsonify(response)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=3000)
+    app.run(host='0.0.0.0', port=5000)
