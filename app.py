@@ -74,14 +74,12 @@ def predict():
     file_path = "temp.jpg"
     file.save(file_path)
 
-    label, conf, recyclable = predict_image(file_path)
-    
-    # img_id = f"{label}_{uuid.uuid4().hex[:8]}"
-    
     upload_result = cloudinary.uploader.upload(file_path, folder="trash")
     img_url = upload_result["secure_url"]
 
+    label, conf, recyclable = predict_image(file_path)
     os.remove(file_path)
+    
     response = {
         'label': label,
         'confidence': f"{conf*100:.2f}%",
